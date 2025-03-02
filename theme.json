@@ -1,4 +1,13 @@
 {
+	"customTemplates": [
+		{
+			"name": "wp-custom-template-full-width-page",
+			"postTypes": [
+				"page"
+			],
+			"title": "Full Width Page"
+		}
+	],
 	"settings": {
 		"appearanceTools": true,
 		"color": {
@@ -195,14 +204,14 @@
 					"text": "var(--wp--preset--color--primary)"
 				}
 			},
-			"h1": {
-				"typography": {
-					"fontSize": "3rem"
-				}
-			},
 			"cite": {
 				"typography": {
 					"fontSize": "max( 50%, 1.13rem )"
+				}
+			},
+			"h1": {
+				"typography": {
+					"fontSize": "3rem"
 				}
 			},
 			"h2": {
