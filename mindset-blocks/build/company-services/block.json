@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "mindset-blocks/company-services",
+  "version": "0.1.0",
+  "title": "Company Services",
+  "category": "text",
+  "icon": "smiley",
+  "description": "display services",
+  "example": {},
+  "supports": {
+    "html": false
+  },
+  "textdomain": "company-services",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}
