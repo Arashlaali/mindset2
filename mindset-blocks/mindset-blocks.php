@@ -51,24 +51,39 @@ function fwd_render_company_services($attributes)
 	<div <?php echo get_block_wrapper_attributes(); ?>>
 		<?php
 		$args = array(
-			'orderby' => 'title',
-			'order' => 'DESC',
 			'post_type'      => 'fwd-service',
-			'posts_per_page' => 100
+			'posts_per_page' => -1,
+			'order'          => 'ASC',
+			'orderby'        => 'title'
 		);
 
 		$query = new WP_Query($args);
 
 		if ($query->have_posts()) {
+
+			echo '<nav class="services-nav">';
+
+			while ($query->have_posts()) {
+				$query->the_post();
+				echo '<a href="#' . esc_attr(get_the_ID()) . '">' . esc_html(get_the_title()) . '</a>';
+			}
+			wp_reset_postdata();
+
+			echo '</nav>';
+
+			echo '<section>';
+
 			while ($query->have_posts()) {
 				$query->the_post();
 
-				echo '<article id="post-' . get_the_ID() . '">';
-				echo '<h2>' . get_the_title() . '</h2>'; // Title in h2
-				the_content(); // Content from block editor
+				echo '<article id="' . esc_attr(get_the_ID()) . '">';
+				echo '<h2>' . esc_html(get_the_title()) . '</h2>';
+				the_content();
 				echo '</article>';
 			}
 			wp_reset_postdata();
+
+			echo '</section>';
 		}
 		?>
 	</div>
