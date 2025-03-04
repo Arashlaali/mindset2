@@ -47,9 +47,23 @@ add_action('init', 'mindset_register_custom_fields');
 function fwd_render_company_services($attributes)
 {
 	ob_start();
-?>
-	<div <?php echo get_block_wrapper_attributes(); ?>>
-		<?php
+
+	// Set up the WP_Query arguments for getting all terms in the custom taxonomy
+	$terms = get_terms(
+		array(
+			'taxonomy' => 'fwd-service-category',
+			'orderby'  => 'name',  // Optional: ordering terms by name
+			'order'    => 'ASC',   // Optional: order terms ascending
+		)
+	);
+
+	// Check if there are terms
+	if ($terms && ! is_wp_error($terms)) {
+
+		// Create the services navigation (unchanged)
+		echo '<nav class="services-nav">';
+
+		// Fetch all the service posts to display the navigation
 		$args = array(
 			'post_type'      => 'fwd-service',
 			'posts_per_page' => -1,
@@ -58,35 +72,58 @@ function fwd_render_company_services($attributes)
 		);
 
 		$query = new WP_Query($args);
-
 		if ($query->have_posts()) {
-
-			echo '<nav class="services-nav">';
-
 			while ($query->have_posts()) {
 				$query->the_post();
 				echo '<a href="#' . esc_attr(get_the_ID()) . '">' . esc_html(get_the_title()) . '</a>';
 			}
 			wp_reset_postdata();
-
-			echo '</nav>';
-
-			echo '<section>';
-
-			while ($query->have_posts()) {
-				$query->the_post();
-
-				echo '<article id="' . esc_attr(get_the_ID()) . '">';
-				echo '<h2>' . esc_html(get_the_title()) . '</h2>';
-				the_content();
-				echo '</article>';
-			}
-			wp_reset_postdata();
-
-			echo '</section>';
 		}
-		?>
-	</div>
-<?php
+
+		echo '</nav>';
+
+		// Loop through the terms and get posts for each term
+		echo '<section>';
+
+		foreach ($terms as $term) {
+			// Output the term name as a section header
+			echo '<h2>' . esc_html($term->name) . '</h2>';
+
+			// Create a new query for the posts associated with this term
+			$args = array(
+				'post_type'      => 'fwd-service',
+				'posts_per_page' => -1,
+				'order'          => 'ASC',
+				'orderby'        => 'title',
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'fwd-service-category', // Replace with your actual taxonomy key
+						'field'    => 'slug',
+						'terms'    => $term->slug,
+					),
+				),
+			);
+
+			$term_query = new WP_Query($args);
+
+			// Check if there are any posts for this term
+			if ($term_query->have_posts()) {
+				// Loop through and display the posts
+				while ($term_query->have_posts()) {
+					$term_query->the_post();
+					echo '<article id="' . esc_attr(get_the_ID()) . '">';
+					echo '<h3>' . esc_html(get_the_title()) . '</h3>';
+					the_content();
+					echo '</article>';
+				}
+				wp_reset_postdata();
+			} else {
+				echo '<p>No services found under this category.</p>';
+			}
+		}
+
+		echo '</section>';
+	}
+
 	return ob_get_clean();
 }

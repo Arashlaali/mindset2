@@ -277,7 +277,7 @@ function mindset_register_taxonomies()
         'rewrite'           => array('slug' => 'featured'),
     );
 
-    register_taxonomy('fwd-featured', array('fwd-work'), $args);
+    register_taxonomy('fwd-featured', array('fwd-work', 'fwd-testimonial'), $args);
 
     // Register Taxonomy Service Category
 
