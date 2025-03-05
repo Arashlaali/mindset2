@@ -1,7 +1,5 @@
 <?php
 
-
-
 /**
  * Registers the block using the metadata loaded from the `block.json` file.
  * Behind the scenes, it registers also all assets so they can be enqueued
@@ -17,6 +15,7 @@ function mindset_blocks_copyright_date_block_init()
 	register_block_type(__DIR__ . '/build/company-services', array(
 		'render_callback' => 'fwd_render_company_services'
 	));
+	register_block_type(__DIR__ . '/build/testimonial-slider', array('render_callback' => 'fwd_render_testimonial_slider'));
 }
 add_action('init', 'mindset_blocks_copyright_date_block_init');
 
@@ -125,5 +124,55 @@ function fwd_render_company_services($attributes)
 		echo '</section>';
 	}
 
+	return ob_get_clean();
+}
+
+// Callback function for the Testimonial Slider
+function fwd_render_testimonial_slider($attributes, $content)
+{
+	ob_start();
+	$swiper_settings = array(
+		'pagination' => $attributes['pagination'],
+		'navigation' => $attributes['navigation']
+	);
+
+	// Set a CSS custom property for the arrow color
+	$arrow_color = isset($attributes['arrowColor']) ? $attributes['arrowColor'] : '#e1ed71'; // Default fallback color
+	$style = ' --arrow-color: ' . esc_attr($arrow_color) . ';';
+
+?>
+	<div <?php echo get_block_wrapper_attributes(array('style' => $style)); ?>>
+		<script>
+			const swiper_settings = <?php echo json_encode($swiper_settings); ?>;
+		</script>
+		<?php
+		$args = array(
+			'post_type'      => 'fwd-testimonial',
+			'posts_per_page' => -1
+		);
+		$query = new WP_Query($args);
+		if ($query->have_posts()) : ?>
+			<div class="swiper">
+				<div class="swiper-wrapper">
+					<?php while ($query->have_posts()) : $query->the_post(); ?>
+						<div class="swiper-slide">
+							<?php the_content(); ?>
+						</div>
+					<?php endwhile; ?>
+				</div>
+			</div>
+			<?php if ($attributes['pagination']) : ?>
+				<div class="swiper-pagination"></div>
+			<?php endif; ?>
+			<?php if ($attributes['navigation']) : ?>
+				<button class="swiper-button-prev"></button>
+				<button class="swiper-button-next"></button>
+			<?php endif; ?>
+		<?php
+			wp_reset_postdata();
+		endif;
+		?>
+	</div>
+<?php
 	return ob_get_clean();
 }
