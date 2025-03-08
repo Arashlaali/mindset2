@@ -89,6 +89,43 @@ article.wp-block-group::after {
 }
 
 
+/*  work page  */
+
+
+
+.page-id-25 .wp-block-group-is-layout-flow::after {
+    content: "";
+    display: block;
+    width: 100%;
+    /* Extends only across the content width */
+    border-bottom: 1px solid #000;
+    /* You can change the color and thickness here */
+    margin-top: 40px;
+    /* Adjust the space above the line */
+}
+
+.term-12 .wp-block-post::after {
+    content: "";
+    display: block;
+    border-bottom: 1px solid #000;
+    /* You can change the color and thickness here */
+    margin-top: 15px;
+    /* Adjust the space above the line */
+}
+
+
+
+
+.term-13 .wp-block-post::after {
+    content: "";
+    display: block;
+    border-bottom: 1px solid #000;
+    /* You can change the color and thickness here */
+    margin-top: 20px;
+    /* Adjust the space above the line */
+}
+
+
 /* navigation override */
 
 /* Navigation Block */

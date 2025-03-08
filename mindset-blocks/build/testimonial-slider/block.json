@@ -24,6 +24,10 @@
     "arrowColor": {
       "type": "string",
       "default": "#0073e6"
+    },
+    "inactiveDotColor": {
+      "type": "string",
+      "default": "#cccccc"
     }
   },
   "textdomain": "testimonial-slider",
