@@ -93,16 +93,21 @@ article.wp-block-group::after {
 
 
 
-.page-id-25 .wp-block-group-is-layout-flow::after {
+.wp-block-post::after {
     content: "";
     display: block;
     width: 100%;
-    /* Extends only across the content width */
     border-bottom: 1px solid #000;
-    /* You can change the color and thickness here */
     margin-top: 40px;
-    /* Adjust the space above the line */
 }
+
+.page-id-17 .wp-block-post::after,
+.page-id-19 .wp-block-post::after {
+    content: none;
+    border-bottom: none;
+    margin-top: 0;
+}
+
 
 .term-12 .wp-block-post::after {
     content: "";
@@ -120,9 +125,8 @@ article.wp-block-group::after {
     content: "";
     display: block;
     border-bottom: 1px solid #000;
-    /* You can change the color and thickness here */
     margin-top: 20px;
-    /* Adjust the space above the line */
+
 }
 
 
